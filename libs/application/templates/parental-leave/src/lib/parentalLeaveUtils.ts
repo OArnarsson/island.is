@@ -30,12 +30,14 @@ import {
   PARENTAL_GRANT_STUDENTS,
   PARENTAL_LEAVE,
   PARENTAL_GRANT,
+  SINGLE,
 } from '../constants'
 import { SchemaFormValues } from '../lib/dataSchema'
 import { PregnancyStatusAndRightsResults } from '../dataProviders/Children/Children'
 import {
   calculatePeriodLength,
   daysToMonths,
+  monthsToDays,
 } from '../lib/directorateOfLabour.utils'
 import {
   ChildInformation,
@@ -45,6 +47,7 @@ import { YesOrNo, Period, PersonInformation } from '../types'
 import { FormatMessage } from '@island.is/localization'
 import { currentDateStartTime } from './parentalLeaveTemplateUtils'
 import {
+  additionalSingleParentMonths,
   daysInMonth,
   defaultMonths,
   multipleBirthsDefaultDays,
@@ -214,11 +217,14 @@ export const getMultipleBirthRequestDays = (
     hasMultipleBirths,
   } = getApplicationAnswers(answers)
 
-  // if (otherParent === NO && hasMultipleBirths) {
-  //   return getMaxMultipleBirthsDays(application.answers)
-  // }
+  if (
+    (otherParent === SINGLE || otherParent === NO) &&
+    hasMultipleBirths === YES
+  ) {
+    return getMaxMultipleBirthsDays(answers)
+  }
 
-  return multipleBirthsRequestDays * 1
+  return multipleBirthsRequestDays
 }
 
 export const getMaxMultipleBirthsDays = (answers: Application['answers']) => {
@@ -238,6 +244,27 @@ export const getMaxMultipleBirthsAndDefaultMonths = (
 ) => {
   const multipleBirthsDaysInMonths = getMaxMultipleBirthsInMonths(answers)
   return defaultMonths + multipleBirthsDaysInMonths
+}
+
+export const getMaxMultipleBirthsAndSingleParenttMonths = (
+  application: Application,
+) => {
+  const multipleBirthsDaysInMonths = getMaxMultipleBirthsInMonths(
+    application.answers,
+  )
+  const singleParentDaysInMonths = getAvailablePersonalRightsSingleParentInMonths(
+    application,
+  )
+
+  return singleParentDaysInMonths + multipleBirthsDaysInMonths
+}
+
+export const getAdditionalSingleParentRightsInDays = (
+  application: Application,
+) => {
+  const { otherParent } = getApplicationAnswers(application.answers)
+
+  return otherParent === SINGLE ? monthsToDays(additionalSingleParentMonths) : 0
 }
 
 export const getAvailableRightsInDays = (application: Application) => {
@@ -261,9 +288,15 @@ export const getAvailableRightsInDays = (application: Application) => {
   const multipleBirthsRequestDays = getMultipleBirthRequestDays(
     application.answers,
   )
+  const additionalSingleParentDays = getAdditionalSingleParentRightsInDays(
+    application,
+  )
 
   return (
-    selectedChild.remainingDays + multipleBirthsRequestDays + transferredDays
+    selectedChild.remainingDays +
+    additionalSingleParentDays +
+    transferredDays +
+    multipleBirthsRequestDays
   )
 }
 
@@ -281,9 +314,25 @@ export const getAvailablePersonalRightsInDays = (application: Application) => {
 
   const totalTransferredDays = getTransferredDays(application, selectedChild)
   const multipleBirthsDays = getMultipleBirthsDays(application)
+  const additionalSingleParentDays = getAdditionalSingleParentRightsInDays(
+    application,
+  )
 
-  return totalDaysAvailable - totalTransferredDays - multipleBirthsDays
+  return (
+    totalDaysAvailable -
+    additionalSingleParentDays -
+    totalTransferredDays -
+    multipleBirthsDays
+  )
 }
+
+export const getAvailablePersonalRightsSingleParentInMonths = (
+  application: Application,
+) =>
+  daysToMonths(
+    getAvailablePersonalRightsInDays(application) +
+      getAdditionalSingleParentRightsInDays(application),
+  )
 
 export const getAvailablePersonalRightsInMonths = (application: Application) =>
   daysToMonths(getAvailablePersonalRightsInDays(application))
@@ -310,12 +359,22 @@ export const getSpouse = (
   return null
 }
 
-export const getOtherParentOptions = (application: Application) => {
+export const getOtherParentOptions = (
+  application: Application,
+  formatMessage: FormatMessage,
+) => {
   const options: Option[] = [
     {
       value: NO,
       dataTestId: 'no-other-parent',
       label: parentalLeaveFormMessages.shared.noOtherParent,
+    },
+    {
+      value: SINGLE,
+      label: parentalLeaveFormMessages.shared.singleParentOption,
+      subLabel: formatMessage(
+        parentalLeaveFormMessages.shared.singleParentDescription,
+      ),
     },
     {
       value: MANUAL,
@@ -1037,14 +1096,33 @@ export const getPeriodSectionTitle = (application: Application) => {
 }
 
 export const getRightsDescTitle = (application: Application) => {
-  const appAnswers = getApplicationAnswers(application.answers)
+  const {
+    applicationType,
+    otherParent,
+    hasMultipleBirths,
+  } = getApplicationAnswers(application.answers)
+
   if (
-    appAnswers.applicationType === PARENTAL_GRANT ||
-    appAnswers.applicationType === PARENTAL_GRANT_STUDENTS
+    applicationType === PARENTAL_GRANT ||
+    applicationType === PARENTAL_GRANT_STUDENTS
   ) {
-    return parentalLeaveFormMessages.shared.grantRightsDescription
+    return otherParent === SINGLE && hasMultipleBirths === YES
+      ? parentalLeaveFormMessages.shared
+          .singleParentGrantMultipleRightsDescription
+      : hasMultipleBirths === YES
+      ? parentalLeaveFormMessages.shared.grantMultipleRightsDescription
+      : otherParent === SINGLE
+      ? parentalLeaveFormMessages.shared.singleParentGrantRightsDescription
+      : parentalLeaveFormMessages.shared.grantRightsDescription
   }
-  return parentalLeaveFormMessages.shared.rightsDescription
+
+  return otherParent === SINGLE && hasMultipleBirths === YES
+    ? parentalLeaveFormMessages.shared.singleParentMultipleRightsDescription
+    : hasMultipleBirths === YES
+    ? parentalLeaveFormMessages.shared.multipleRightsDescription
+    : otherParent === SINGLE
+    ? parentalLeaveFormMessages.shared.singleParentRightsDescription
+    : parentalLeaveFormMessages.shared.rightsDescription
 }
 
 export const getPeriodImageTitle = (application: Application) => {

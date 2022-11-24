@@ -178,9 +178,9 @@ export const parentalLeaveFormMessages: MessageDir = {
     otherParentDescription: {
       id: 'pl.application:otherParent.description',
       defaultMessage:
-        'Skráður maki í þjóðskrá er sjálfgefinn. Þú getur skráð hitt foreldrið eða haldið áfram án skráningar.',
+        'Skráður maki í þjóðskrá er sjálfgefinn. Þú getur valið að skráð hitt foreldri, hvort þú sért einstætt foreldri eða haldið áfram án skráningar.',
       description:
-        'Your spouse according to National Registry records is filled in by default. You can register the other parent or continue without registration.',
+        'Your spouse according to National Registry records is filled in by default. You can choose to register the other parent, whether you are a single parent or continue without registration.',
     },
     otherParentTitle: {
       id: 'pl.application:otherParent.title',
@@ -211,6 +211,17 @@ export const parentalLeaveFormMessages: MessageDir = {
       id: 'pl.application:otherParent.option',
       defaultMessage: 'Hitt foreldrið er:',
       description: 'The other parent is:',
+    },
+    singleParentOption: {
+      id: 'pl.application:singleParent.option',
+      defaultMessage: 'Einstætt foreldri',
+      description: 'Single parent',
+    },
+    singleParentDescription: {
+      id: 'pl.application:singleParent.option.description',
+      defaultMessage: 'Á við þegar einhleyp móðir gengst undir tæknifrjóvgun',
+      description:
+        'This applies when a single mother undergoes artificial insemination',
     },
     otherParentSpouse: {
       id: 'pl.application:otherParent.spouse',
@@ -346,8 +357,8 @@ export const parentalLeaveFormMessages: MessageDir = {
     rightsDescription: {
       id: 'pl.application:rights.description',
       defaultMessage:
-        'Sjálfstæður réttur hvers foreldris er sex mánuðir í fæðingarorlof, en annað foreldrið má yfirfæra allt að einn mánuð af sínum réttindum yfir á hitt foreldrið.',
-      description: `Both parents have 6 months, but can transfer up to 45 days to the other parent.`,
+        'Fæðingarorlofsréttur eru 12 mánuðir sem skiptast jafnt milli foreldra, en þó má færa allt að 45 daga frá einu foreldri til hins. ATH Ef þú átt aukinn rétt þarf að biðja Fæðingarorlofssjóð að bæta aukamánuðum við orlofið eftir á.',
+      description: `The right to parental leave is 12 months, they  are equally divided between parents, but 45 days can be moved from one parent to the other.`,
     },
     grantRightsDescription: {
       id: 'pl.application:grant.rights.description',
@@ -355,6 +366,43 @@ export const parentalLeaveFormMessages: MessageDir = {
         'Fæðingarstyrksréttur eru 12 mánuðir sem skiptast jafnt milli foreldra, en þó má færa allt að 45 daga frá einu foreldri til hins. ATH Ef þú átt aukinn rétt þarf að biðja Fæðingarorlofssjóð að bæta aukamánuðum við styrkinn eftir á.',
       description:
         'Parental grant allowance is a total of 12 months which is divided equally between two parents. However, you can move up to 45 days from one parent to another. ATTN if you are entitled to increased rights of parental grant you will have to contact Parental Leave Fund and they will add extra months to the grant after submission.',
+    },
+    multipleRightsDescription: {
+      id: 'pl.application:multiple.rights.description',
+      defaultMessage:
+        'Fæðingarorlofsréttur eru 12 mánuðir sem skiptast jafnt milli foreldra, en þó má færa allt að 45 daga frá einu foreldri til hins. Fyrir hvert barn sem fæðist bætist við 3 mánaða sameiginlegur réttur foreldra til fæðingarorlofs. ATH Ef þú átt aukinn rétt þarf að biðja Fæðingarorlofssjóð að bæta aukamánuðum við orlofið eftir á. ',
+      description: `The right to parental leave is 12 months, they  are equally divided between parents, but 45 days can be moved from one parent to the other. For each child that is born, 3 months of the parents' joint right is added.`,
+    },
+    grantMultipleRightsDescription: {
+      id: 'pl.application:grant.multiple.rights.description',
+      defaultMessage:
+        'Fæðingarstyrksréttur eru 12 mánuðir sem skiptast jafnt milli foreldra, en þó má færa allt að 45 daga frá einu foreldri til hins. Fyrir hvert barn sem fæðist bætist við 3 mánaða sameiginlegur réttur foreldra til fæðingarstyrks. ATH Ef þú átt aukinn rétt þarf að biðja Fæðingarorlofssjóð að bæta aukamánuðum við styrkinn eftir á.',
+      description: `Parental grant allowance is a total of 12 months which is divided equally between two parents. However, you can move up to 45 days from one parent to another. For each child that is born, 3 months of the parents' joint right is added. ATTN if you are entitled to increased rights of parental grant you will have to contact Parental Leave Fund and they will add extra months to the grant after submission.`,
+    },
+    singleParentRightsDescription: {
+      id: 'pl.application:single.parent.rights.description',
+      defaultMessage:
+        'Fæðingarorlofsréttur fyrir einhleypt foreldri eru 12 mánuðir. ATH Ef þú átt aukinn rétt þarf að biðja Fæðingarorlofssjóð að bæta aukamánuðum við orlofið eftir á.',
+      description:
+        'The right to parental leave is 12 months for single parent. ATTN if you are entitled to increased rights of parental leave you will have to contact Parental Leave Fund and they will add extra months to the leave after submission.',
+    },
+    singleParentGrantRightsDescription: {
+      id: 'pl.application:single.parent.grant.rights.description',
+      defaultMessage:
+        'Fæðingarstyrksréttur fyrir einhleypt foreldri eru 12 mánuðir. ATH Ef þú átt aukinn rétt þarf að biðja Fæðingarorlofssjóð að bæta aukamánuðum við styrkinn eftir á.',
+      description: `The right to parental leave is 12 months for single parent. ATTN if you are entitled to increased rights of parental grant you will have to contact Parental Leave Fund and they will add extra months to the grant after submission.`,
+    },
+    singleParentMultipleRightsDescription: {
+      id: 'pl.application:single.parent.multiple.rights.description',
+      defaultMessage:
+        'Fæðingarorlofsréttur fyrir einhleypt foreldri eru 12 mánuðir. Fyrir hvert barn sem fæðist bætist við 3 mánaða sameiginlegur réttur foreldra til fæðingarorlofs. ATH Ef þú átt aukinn rétt þarf að biðja Fæðingarorlofssjóð að bæta aukamánuðum við orlofið eftir á.',
+      description: `The right to parental leave is 12 months for single parent. For each child that is born, 3 months of the parents' joint right is added. ATTN if you are entitled to increased rights of parental leave you will have to contact Parental Leave Fund and they will add extra months to the leave after submission.`,
+    },
+    singleParentGrantMultipleRightsDescription: {
+      id: 'pl.application:single.parent.grant.multiple.rights.description',
+      defaultMessage:
+        'Fæðingarstyrksréttur fyrir einhleypt foreldri eru 12 mánuðir. Fyrir hvert barn sem fæðist bætist við 3 mánaða sameiginlegur réttur foreldra til fæðingarstyrks. ATH Ef þú átt aukinn rétt þarf að biðja Fæðingarorlofssjóð að bæta aukamánuðum við styrkinn eftir á.',
+      description: `The right to parental leave is 12 months for single parent. For each child that is born, 3 months of the parents' joint right is added. ATTN if you are entitled to increased rights of parental grant you will have to contact Parental Leave Fund and they will add extra months to the grant after submission.`,
     },
     requestRightsName: {
       id: 'pl.application:request.rights.name',
@@ -418,7 +466,7 @@ export const parentalLeaveFormMessages: MessageDir = {
     yourMultipleBirthsRightsInMonths: {
       id: 'pl.application:your.multipleBirths.rights.inMonths',
       defaultMessage: '{months} mánuðir – sameiginlegur réttur vegna fjölbura',
-      description: '{months} months – joint entitlement due to multiple births',
+      description: '{months} months – joint entitlement for multiple births',
     },
     requestRightsDaysTitle: {
       id: 'pl.application:request.rights.daysTitle',
@@ -1757,6 +1805,16 @@ export const parentalLeaveFormMessages: MessageDir = {
       defaultMessage: `Þeir sem þiggja dagpeninga/veikindarétt frá stéttarfélagi eða skjúkradagpeninga frá Sjúkratryggingum Íslands þurfa að skila inn skjali því til staðfestingar. Athugaðu að skjalið þarf að vera á .pdf formi`,
       description: `Those who receive unemployment benefits/sick leave allowance from the Union or sick leave allowance from Sjúkratryggingar Íslands must submit a document to confirm this. Note that the document needs to be on .pdf format`,
     },
+    singleParentTitle: {
+      id: 'pl.application:attachmentscreen.singleParent',
+      defaultMessage: `Staðfesting vegna einstæðra foreldra`,
+      description: `Confirmation for single parent`,
+    },
+    singleParentDescription: {
+      id: 'pl.application:attachmentscreen.singleParentDescription',
+      defaultMessage: `Þeir sem hafa farið í tæknifrjóvgun þurfa að skila inn skjali því til staðfestingar frá Livio. Athugaðu að skjalið þarf að vera á .pdf formi`,
+      description: `Those who have undergone artificial insemination must submit a document to confirm this from Livio. Note that the document needs to be on .pdf format`,
+    },
     fatherWithoutMotherTitle: {
       id: 'pl.application:attachmentscreen.fatherWithoutMotherTitle',
       defaultMessage: 'Vottorð frá heilsugæslu',
@@ -2180,8 +2238,9 @@ export const errorMessages = defineMessages({
   },
   tooManyMultipleBirthsAnswer: {
     id: 'pl.application:errors.too.few.multiple.births.answer',
-    defaultMessage: 'icel-trans: "Ekki hægt að skrá fleiri en fjögur börn!"',
-    description: 'Unable to assign more than four children!',
+    defaultMessage:
+      'icel-trans: "Ekki hægt að skrá fleira en 4 börn ( Need translated )!"',
+    description: 'English version ( Need translated )!',
   },
   notAllowedToGiveRights: {
     id: 'pl.application:errors.not.allowed.to.give.rights',
