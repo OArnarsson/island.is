@@ -441,7 +441,7 @@ const ParentalLeaveTemplate: ApplicationTemplate<
       },
       [States.VINNUMALASTOFNUN_APPROVAL]: {
         entry: ['assignToVMST', 'setNavId', 'removeNullPeriod'],
-        exit: ['clearAssignees', 'setNavId'],
+        exit: ['clearAssignees', 'setNavId', 'resetAdditionalDocumentsArray'],
         meta: {
           name: States.VINNUMALASTOFNUN_APPROVAL,
           status: 'inprogress',
@@ -520,12 +520,11 @@ const ParentalLeaveTemplate: ApplicationTemplate<
           [DefaultEvents.EDIT]: { target: States.DRAFT },
         },
       },
-      [States.ADDITIONAL_DOCUMENTS_REQUIRED]: {
+      [States.INREVIEW_ADDITIONAL_DOCUMENTS_REQUIRED]: {
         entry: 'assignToVMST',
-        exit: 'setActionName',
         meta: {
           status: 'inprogress',
-          name: States.ADDITIONAL_DOCUMENTS_REQUIRED,
+          name: States.INREVIEW_ADDITIONAL_DOCUMENTS_REQUIRED,
           actionCard: {
             description: statesMessages.additionalDocumentRequiredDescription,
           },
@@ -554,26 +553,28 @@ const ParentalLeaveTemplate: ApplicationTemplate<
           ],
         },
         on: {
-          [DefaultEvents.EDIT]: { target: States.DRAFT },
+          [DefaultEvents.EDIT]: {
+            target: States.ADDITIONAL_DOCUMENTS_REQUIRED,
+          },
         },
       },
-      [States.RESIDENCE_GRAND_APPLICATION]: {
-        entry: ['setPreviousState', 'assignToVMST'],
+      [States.ADDITIONAL_DOCUMENTS_REQUIRED]: {
+        entry: 'assignToVMST',
+        exit: 'setActionName',
         meta: {
           status: 'inprogress',
-          name: States.RESIDENCE_GRAND_APPLICATION,
+          name: States.ADDITIONAL_DOCUMENTS_REQUIRED,
+          actionCard: {
+            description: statesMessages.additionalDocumentRequiredDescription,
+          },
           lifecycle: pruneAfterDays(970),
-          onExit: defineTemplateApi({
-            action: ApiModuleActions.validateApplication,
-            throwOnError: true,
-          }),
           progress: 0.5,
           roles: [
             {
               id: Roles.APPLICANT,
               formLoader: () =>
-                import('../forms/ResidenceGrant').then((val) =>
-                  Promise.resolve(val.ResidenceGrant),
+                import('../forms/AdditionalDocumentsRequired').then((val) =>
+                  Promise.resolve(val.AdditionalDocumentsRequired),
                 ),
               read: 'all',
               write: 'all',
@@ -954,7 +955,7 @@ const ParentalLeaveTemplate: ApplicationTemplate<
         on: {
           [DefaultEvents.APPROVE]: { target: States.APPROVED },
           ADDITIONALDOCUMENTSREQUIRED: {
-            target: States.ADDITIONAL_DOCUMENTS_REQUIRED,
+            target: States.INREVIEW_ADDITIONAL_DOCUMENTS_REQUIRED,
           },
           [DefaultEvents.EDIT]: { target: States.EDIT_OR_ADD_PERIODS },
           [DefaultEvents.REJECT]: {
