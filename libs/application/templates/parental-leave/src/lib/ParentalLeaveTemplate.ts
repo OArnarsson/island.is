@@ -633,7 +633,6 @@ const ParentalLeaveTemplate: ApplicationTemplate<
             target: States.VINNUMALASTOFNUN_APPROVE_EDITS,
           },
           ['APPROVEDREJECT']: { target: States.APPROVED },
-
           ['VINNUMALASTOFNUNAPPROVALREJECT']: {
             target: States.VINNUMALASTOFNUN_APPROVAL,
           },
