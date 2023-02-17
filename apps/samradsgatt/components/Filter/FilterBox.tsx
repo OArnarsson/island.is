@@ -8,21 +8,9 @@ import {
   Text,
 } from '@island.is/island-ui/core'
 
-const handleRadioChange = () => {}
+import RenderFilterData from './RenderFilterData'
 
-const RenderData = (type: string, data: any) => {
-  if (type === 'sort') {
-    return data.sort.items.map((item) => (
-      <RadioButton checked={item.checked} label={item.label} />
-    ))
-  } else {
-    return data[type].items.map((item) => (
-      <Checkbox label={item.label} checked={item.checked} />
-    ))
-  }
-}
-
-const FilterBox = ({ title, type, data }) => {
+const FilterBox = ({ title, type, form, setForm, data, setData }) => {
   return (
     <Box
       borderColor="blue200"
@@ -36,11 +24,11 @@ const FilterBox = ({ title, type, data }) => {
           <Button
             colorScheme="light"
             circle
-            icon={data[type].isOpen ? 'remove' : 'add'}
-            title={data[type].isOpen ? 'Loka' : 'Opna'}
+            icon={form[type].isOpen ? 'remove' : 'add'}
+            title={form[type].isOpen ? 'Loka' : 'Opna'}
           />
         </Inline>
-        {data[type].isOpen && <>{RenderData(type, data)}</>}
+        {form[type].isOpen && <>{RenderFilterData(type, form, setForm, setData)}</>}
       </Stack>
     </Box>
   )

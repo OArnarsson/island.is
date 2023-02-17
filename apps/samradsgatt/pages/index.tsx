@@ -9,6 +9,7 @@ import {
   Stack,
   DatePicker,
   Button,
+  RadioButton,
 } from '@island.is/island-ui/core'
 import React, { useEffect, useState } from 'react'
 import { HeroBanner } from '../components'
@@ -171,9 +172,6 @@ export const Index = () => {
   const [options, setOptions] = useState<AsyncSearchOption[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const typesOpts = getDataForFilters(data, 'type')
-  const statusOpts = getDataForFilters(data, 'status')
-
   const clearAll = () => {
     setIsLoading(false)
     setOptions([])
@@ -229,10 +227,14 @@ export const Index = () => {
         Institutions={Institutions}
         options={options}
       />
-
       <GridContainer>
         <GridRow>
-          <Filter data={form} />
+          <Filter
+            form={form}
+            setForm={(newForm) => setForm(newForm)}
+            data={data}
+            setData={(newData) => setData(newData)}
+          />
 
           <GridColumn span={['12/12', '12/12', '9/12', '9/12', '9/12']}>
             {data && (

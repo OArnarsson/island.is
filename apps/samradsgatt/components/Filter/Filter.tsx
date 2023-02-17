@@ -7,17 +7,34 @@ import {
 } from '@island.is/island-ui/core'
 import FilterBox from './FilterBox'
 
-const Filter = ({ data }) => {
+const Filter = ({ form, setForm, data, setData }) => {
   return (
     <GridColumn span={['0', '0', '3/12', '3/12', '3/12']}>
       <Stack space={2}>
         <FilterBox
           title="Röðun"
           type="sort"
+          form={form}
+          setForm={setForm}
           data={data}
+          setData={setData}
         />
-        <FilterBox title="Staða máls" type="status" data={data} />
-        <FilterBox title="Tegund máls" type="type" data={data} />
+        <FilterBox
+          title="Staða máls"
+          type="status"
+          form={form}
+          setForm={setForm}
+          data={data}
+          setData={setData}
+        />
+        <FilterBox
+          title="Tegund máls"
+          type="type"
+          form={form}
+          setForm={setForm}
+          data={data}
+          setData={setData}
+        />
         <DatePicker
           size="sm"
           locale="is"
