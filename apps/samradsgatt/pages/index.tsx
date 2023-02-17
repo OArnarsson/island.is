@@ -6,13 +6,19 @@ import {
   GridRow,
   Tiles,
   Text,
+  Stack,
+  DatePicker,
+  Button,
 } from '@island.is/island-ui/core'
 import React, { useEffect, useState } from 'react'
 import { HeroBanner } from '../components'
 import Card from '../components/Card/Card'
+import Filter from '../components/Filter/Filter'
+import FilterBox from '../components/Filter/FilterBox'
 import Layout from '../components/Layout/Layout'
 import SearchAndFilter from '../components/SearchAndFilter/SearchAndFilter'
 import Types from '../utils/dummydata/api/Types'
+import getDataForFilters from '../utils/helpers/getDataForFilters'
 
 type arrayDummy = Array<info>
 type info = {
@@ -165,6 +171,9 @@ export const Index = () => {
   const [options, setOptions] = useState<AsyncSearchOption[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  const typesOpts = getDataForFilters(data, 'type')
+  const statusOpts = getDataForFilters(data, 'status')
+
   const clearAll = () => {
     setIsLoading(false)
     setOptions([])
@@ -185,6 +194,27 @@ export const Index = () => {
     }
   }, [searchValue])
 
+  const initForm = {
+    sort: {
+      isOpen: true,
+      items: [
+        { label: 'Nýjast', checked: true },
+        {
+          label: 'Síðast uppfært',
+          checked: false,
+        },
+        {
+          label: 'Frestur að renna út',
+          checked: false,
+        },
+      ],
+    },
+    status: { isOpen: true, items: getDataForFilters(data, 'status') },
+    type: { isOpen: true, items: getDataForFilters(data, 'type') },
+  }
+
+  const [form, setForm] = useState(initForm)
+
   return (
     <Layout showIcon={false}>
       <HeroBanner />
@@ -202,7 +232,8 @@ export const Index = () => {
 
       <GridContainer>
         <GridRow>
-          <GridColumn span={['0', '0', '3/12', '3/12', '3/12']}></GridColumn>
+          <Filter data={form} />
+
           <GridColumn span={['12/12', '12/12', '9/12', '9/12', '9/12']}>
             {data && (
               <Tiles space={3} columns={[1, 1, 1, 2, 3]}>
