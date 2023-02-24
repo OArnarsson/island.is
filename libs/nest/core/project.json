@@ -6,7 +6,7 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/nest/core/**/*.ts"]
+        "lintFilePatterns": ["libs/nest/core/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
@@ -18,5 +18,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["lib:nest", "scope:nest"]
 }
